@@ -49,10 +49,8 @@ public class Login extends AppCompatActivity {
                 pairs[3] = new Pair<View, String>(login, "btnLogInTransition");
                 pairs[4] = new Pair<View, String>(callSignUp, "btnSignUpTransition");
 
-
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(Login.this, pairs);
                 startActivity(intent, options.toBundle());
-
             }
         });
     }
@@ -82,19 +80,24 @@ public class Login extends AppCompatActivity {
     }
 
     public void loginUser(View view) {
-        //Validate Login Info
+        // Temporary bypass of Firebase authentication for testing purposes
+        // Directly go to Dashboard activity regardless of input
+        /*Intent intent = new Intent(Login.this, Dashboard.class);
+        startActivity(intent);
+        */
+
+        // Original Firebase authentication code - Uncomment when ready to use
         if (!validateUsername() | !validatePassword()) {
             return;
         } else {
             isUser();
         }
+
     }
 
     private void isUser() {
-
         final String userEnteredUsername = username.getEditText().getText().toString().trim();
         final String userEnteredPassword = password.getEditText().getText().toString().trim();
-        Log.d("@@@@@@@@@",userEnteredPassword);
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
         Query checkUser = reference.orderByChild("username").equalTo(userEnteredUsername);
@@ -102,44 +105,38 @@ public class Login extends AppCompatActivity {
         checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    DataSnapshot userSnapshot = dataSnapshot.getChildren().iterator().next();
+                    String passwordFromDB = userSnapshot.child("password").getValue(String.class);
 
-                if(dataSnapshot.exists()){
+                    if (passwordFromDB != null && passwordFromDB.equals(userEnteredPassword)) {
+                        String nameFromDB = userSnapshot.child("name").getValue(String.class);
+                        String usernameFromDB = userSnapshot.child("username").getValue(String.class);
+                        String phoneNoFromDB = userSnapshot.child("phoneNo").getValue(String.class);
+                        String emailFromDB = userSnapshot.child("email").getValue(String.class);
 
-                    username.setError(null);
-                    username.setErrorEnabled(false);
-
-                    String passwordFromDB = dataSnapshot.child(userEnteredPassword).child("password").getValue(String.class);
-                    Log.d("AAAAAAAAAA","SAU"+passwordFromDB);
-                    if (passwordFromDB != null && passwordFromDB.equals(userEnteredPassword)){
-
-                        username.setError(null);
-                        username.setErrorEnabled(false);
-
-                        String nameFromDB=dataSnapshot.child(userEnteredUsername).child("name").getValue(String.class);
-                        String usernameFromDB = dataSnapshot.child(userEnteredUsername).child("username").getValue(String.class);
-                        String phoneNoFromDB = dataSnapshot.child(userEnteredUsername).child("phoneNo").getValue(String.class);
-                        String emailFromDB = dataSnapshot.child(userEnteredUsername).child("email").getValue(String.class);
-
-                        Intent intent = new Intent(getApplicationContext(), UserProfile.class);
+                        Intent intent = new Intent(getApplicationContext(), Dashboard.class);
                         intent.putExtra("name", nameFromDB);
                         intent.putExtra("username", usernameFromDB);
                         intent.putExtra("email", emailFromDB);
                         intent.putExtra("phoneNo", phoneNoFromDB);
                         intent.putExtra("password", passwordFromDB);
+
+
                         startActivity(intent);
                     } else {
                         password.setError("Wrong password");
                         password.requestFocus();
                     }
-                } else{
-                    username.setError("User does not exists");
+                } else {
+                    username.setError("User does not exist");
                     username.requestFocus();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Handle database error
             }
         });
     }

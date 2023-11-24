@@ -230,10 +230,11 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="UPDATE"
+                android:background="@color/green"
                 android:fontFamily="@font/antic"
-                android:textSize="20sp"
-                android:background="@color/green"/>
+                android:onClick="update"
+                android:text="UPDATE"
+                android:textSize="20sp" />
 
 
         </LinearLayout>
