@@ -14,13 +14,18 @@
         android:icon="@drawable/weather"
         android:id="@+id/weather"/>
 
-    <item android:title="Disease Prediction"
-        android:icon="@drawable/disease"
-        android:id="@+id/more"/>
+    <item android:title="Schemes"
+        android:icon="@drawable/ic_govt_schemes"
+        android:id="@+id/schemes"/>
 
-    <item android:title="Mandi"
-        android:icon="@drawable/mandi"
-        android:id="@+id/mandi" />
+<!--    <item android:title="Mandi"-->
+<!--        android:icon="@drawable/mandiimage"-->
+<!--        android:id="@+id/mandi" />-->
+
+    <item android:title="Rentals"
+        android:icon="@drawable/rentalsbg"
+        android:id="@+id/rentals" />
+
 
 
 

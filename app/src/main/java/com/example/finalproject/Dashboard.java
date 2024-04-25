@@ -48,11 +48,15 @@ public class Dashboard extends AppCompatActivity {
                 case R.id.weather:
                     replaceFragment(new WeatherFragment());
                     return true;
-                case R.id.mandi:
-                    replaceFragment(new MandiFragment());
+//                case R.id.mandi:
+//                    replaceFragment(new MandiFragment());
+//                    return true;
+                case R.id.schemes:
+                    replaceFragment(new GovernmentSchemesFragment());
                     return true;
-                case R.id.more:
-                    replaceFragment(new DiseasePredictionFragment());
+
+                case R.id.rentals:
+                    replaceFragment(new RentalsFragment());
                     return true;
             }
             return false;

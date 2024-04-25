@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Window window=this.getWindow();
         window.setStatusBarColor(this.getResources().getColor(R.color.white));
 
